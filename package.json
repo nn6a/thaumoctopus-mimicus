@@ -11,7 +11,7 @@
   "author": "noah398",
   "repository": {
     "type": "git",
-    "url": "git://github.com/noah398/thaumoctopus-mimicus.git"
+    "url": "git+https://github.com/noah398/-thaumoctopus-mimicus.git"
   },
   "license": "ISC",
   "dependencies": {

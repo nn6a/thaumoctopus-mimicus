@@ -13,13 +13,12 @@ server.connection({
 // Add the route
 server.route({
     method: 'GET',
-    // Path parameters
-    path: '/hello/{fname}/{lname}',
+    path: '/hello',
     handler: function(request, reply) {
         nunjucks.render('index.html', {
             // Using path parameters
-            fname: request.params.fname,
-            lname: request.params.lname
+            fname: request.query.fname,
+            lname: request.query.lname
         }, function(err, html) {
             reply(html)
         })

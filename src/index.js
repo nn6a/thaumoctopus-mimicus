@@ -1,5 +1,7 @@
 import Hapi from 'hapi'
 import nunjucks from 'nunjucks'
+import Application from './lib'
+import HelloController from './hello-controller'
 
 nunjucks.configure('./dist')
 
@@ -10,20 +12,11 @@ server.connection({
     port: 8000
 })
 
-// Add the route
-server.route({
-    method: 'GET',
-    path: '/hello',
-    handler: function(request, reply) {
-        nunjucks.render('index.html', {
-            // Using path parameters
-            fname: request.query.fname,
-            lname: request.query.lname
-        }, function(err, html) {
-            reply(html)
-        })
-    }
+const application = new Application({
+    '/hello/{name*}': HelloController
+}, {
+    server: server
 })
 
 // Start the server
-server.start()
+application.start()

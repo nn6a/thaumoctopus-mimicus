@@ -3,6 +3,11 @@ import babel from 'gulp-babel'
 import nodemon from 'gulp-nodemon'
 import sequence from 'run-sequence'
 
+gulp.task('copy', () => {
+    return gulp.src('src/**/*.html')
+        .pipe(gulp.dest('dist'))
+})
+
 gulp.task('compile', () => {
     return gulp.src('src/**/*.js')
         .pipe(babel({
@@ -13,6 +18,7 @@ gulp.task('compile', () => {
 
 gulp.task('watch', () => {
     gulp.watch('src/**/*.js', ['compile'])
+    gulp.watch('src/**/*.html', ['copy'])
 })
 
 gulp.task('start', () => {
@@ -25,5 +31,5 @@ gulp.task('start', () => {
 })
 
 gulp.task('default', (callback) => {
-    sequence(['compile', 'watch'], 'start', callback)
+    sequence(['compile', 'watch', 'copy'], 'start', callback)
 })

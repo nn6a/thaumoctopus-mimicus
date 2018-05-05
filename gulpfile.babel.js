@@ -25,7 +25,7 @@ gulp.task('start', () => {
     nodemon({
         watch: 'dist',
         script: 'dist/index.js',
-        ext: 'js',
+        ext: 'js html',
         env: {'NODE_ENV': 'development'}
     })
 })

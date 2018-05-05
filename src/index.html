@@ -5,6 +5,7 @@
     <title>Test</title>
 </head>
 <body>
-    <p>Hello, {{ fname }} {{ lname }}</p>
+    <!-- Disable nunjucks' autoescape -->
+    {{body|safe}}
 </body>
 </html>

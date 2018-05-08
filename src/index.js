@@ -12,6 +12,22 @@ server.connection({
     port: 8000
 })
 
+const APP_FILE_PATH = '/application.js'
+
+server.register(require('inert'), (err) => {
+    if (err) {
+        throw err
+    }
+
+    server.route({
+        method: 'GET',
+        path: APP_FILE_PATH,
+        handler: (request, reply) => {
+            reply.file('dist/build/application.js')
+        }
+    })
+})
+
 const application = new Application({
     '/hello/{name*}': HelloController
 }, {
@@ -22,7 +38,10 @@ const application = new Application({
                        reply,
                        body,
                        callback) {
-        nunjucks.render('./index.html', {body: body}, (err, html) => {
+        nunjucks.render('./index.html', {
+            body: body,
+            application: APP_FILE_PATH
+        }, (err, html) => {
             if (err) {
                 return callback(err, null)
             }

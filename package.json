@@ -16,16 +16,23 @@
   "license": "ISC",
   "dependencies": {
     "hapi": "^16.6.2",
+    "inert": "^4.2.1",
     "nunjucks": "^3.1.2"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.6.1",
+    "babelify": "^8.0.0",
+    "browserify": "^16.2.0",
     "eslint": "^4.19.1",
     "eslint-config-google": "^0.9.1",
     "gulp": "^3.9.1",
     "gulp-babel": "^7.0.1",
     "gulp-nodemon": "^2.2.1",
-    "run-sequence": "^2.2.1"
+    "run-sequence": "^2.2.1",
+    "vinyl-source-stream": "^2.0.0"
+  },
+  "browser": {
+    "./src/index.js": "./src/index.client.js"
   }
 }

@@ -19,17 +19,26 @@ server.register(require('inert'), (err) => {
         throw err
     }
 
-    server.route({
-        method: 'GET',
-        path: APP_FILE_PATH,
-        handler: (request, reply) => {
-            reply.file('dist/build/application.js')
+    server.route([
+        {
+            method: 'GET',
+            path: APP_FILE_PATH,
+            handler: (request, reply) => {
+                reply.file('dist/build/application.js')
+            }
+        },
+        {
+            method: 'GET',
+            path: '/templates/{template*}',
+            handler: (request, reply) => {
+                reply.file('dist/' + request.params.template)
+            }
         }
-    })
+    ])
 })
 
 const application = new Application({
-    '/hello/{name*}': HelloController
+    '/{name*}': HelloController
 }, {
     server: server,
     document: function(application,

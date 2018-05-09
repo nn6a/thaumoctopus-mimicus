@@ -16,6 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "call": "^5.0.1",
+    "cookies-js": "^1.2.3",
     "hapi": "^16.6.2",
     "inert": "^4.2.1",
     "nunjucks": "^3.1.2",

@@ -1,3 +1,5 @@
+import cookieFactory from './cookie'
+
 export default class Application {
     constructor(routes, options) {
         this.server = options.server
@@ -20,7 +22,8 @@ export default class Application {
             handler: (request, reply) => {
                 const controller = new Controller({
                     query: request.query,
-                    params: request.params
+                    params: request.params,
+                    cookie: cookieFactory(request, reply)
                 })
 
                 controller.index(this, request, reply, (err) => {

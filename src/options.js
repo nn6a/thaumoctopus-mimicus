@@ -48,7 +48,8 @@ export default {
                        callback) {
         nunjucks.render('./index.html', {
             body: body,
-            application: APP_FILE_PATH
+            application: APP_FILE_PATH,
+            state: controller.serialize()
         }, (err, html) => {
             if (err) {
                 return callback(err, null)

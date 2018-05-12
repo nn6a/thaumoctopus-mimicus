@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 export default function(request, reply) {
     // encoding functions http://www.rfc-editor.org/rfc/rfc6265.txt
     // follows same patterns as 'cookies-js' that is used on the client

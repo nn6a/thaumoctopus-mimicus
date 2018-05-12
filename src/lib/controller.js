@@ -21,4 +21,21 @@ export default class Controller {
             callback(null, body)
         })
     }
+
+    serialize() {
+        return JSON.stringify(this.context.data || {})
+    }
+
+    deserialize() {
+        // TODO: Fix JSON parse error
+        // Uncaught SyntaxError: Unexpected token & in JSON at position 1
+        // Replace escaped characters
+        return this.context.data = JSON.parse(window.__STATE__)
+    }
+
+    attach(el) {
+    }
+
+    detach(el) {
+    }
 }

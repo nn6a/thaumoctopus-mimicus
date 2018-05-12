@@ -14,17 +14,22 @@ function getName(context) {
     // 1. path param
     // 2. query param
     // 3. default value
-    name.fname = (nameParts[0] || context.query.fname) ||
-        name.fname
-    name.lname = (nameParts[1] || context.query.lname) ||
-        name.lname
+    name.fname = (nameParts[0] || context.query.fname) || name.fname
+    name.lname = (nameParts[1] || context.query.lname) || name.lname
 
     return name
 }
 
+function onClick(e) {
+    console.log(e.currentTarget)
+}
+
 export default class HelloController extends Controller {
     toString(callback) {
-        nunjucks.render('hello.html', getName(this.context), (err, html) => {
+        let context = getName(this.context)
+        context.data = this.context.data
+
+        nunjucks.render('hello.html', context, (err, html) => {
                 if (err) {
                     return callback(err, null)
                 }
@@ -34,13 +39,18 @@ export default class HelloController extends Controller {
     }
 
     index(application, request, reply, callback) {
-        this.context.cookie.set(
-            'random',
-            '_' + (Math.floor(Math.random() * 1000) + 1),
-            {path: '/'}
-        )
-
+        this.context.cookie.set('random', '_' + (Math.floor(Math.random() * 1000) + 1), {path: '/'})
+        this.context.data = {random: Math.floor(Math.random() * 1000) + 1}
         callback(null)
+    }
+
+    attach(el) {
+        console.log(this.context.data.random)
+        this.clickHandler = el.addEventListener('click', onClick, false)
+    }
+
+    detach(el) {
+        el.removeEventListener('click', onClick, false)
     }
 }
 

@@ -28,19 +28,10 @@ export default class Application {
             return
         }
 
-        let urlParts = url.split('?')
-        let [path, search] = urlParts
-        let match = this.router.route('get', path)
-        let {route, params} = match
-        let Controller = this.routes[route]
+        let previousController = this.controller
+        this.controller = this.createController(url)
 
-        if (route && Controller) {
-            const controller = new Controller({
-                query: query.parse(search),
-                params: params,
-                cookie: cookie
-            })
-
+        if (this.controller) {
             const request = () => {
             }
             const reply = replyFactory(this)
@@ -49,23 +40,27 @@ export default class Application {
                 history.pushState({}, null, url)
             }
 
-            controller.index(this, request, reply, (err) => {
+            this.controller.index(this, request, reply, (err) => {
                 if (err) {
                     return reply(err)
                 }
 
+                let targetEl = document.querySelector(this.options.target)
+                if (previousController) {
+                    previousController.detach(targetEl)
+                }
+
                 // render controller response
-                controller.render(this.options.target, (err, response) => {
+                this.controller.render(this.options.target, (err, response) => {
                     if (err) {
                         return reply(err)
                     }
 
                     reply(response)
+                    this.controller.attach(targetEl)
                 })
             })
         }
-
-        console.log(url)
     }
 
     start() {
@@ -88,5 +83,40 @@ export default class Application {
                 this.navigate(identifier || href)
             }
         })
+
+        this.rehydrate()
+    }
+
+    createController(url) {
+        // split the path and search string
+        let urlParts = url.split('?')
+        // destructure url parts array
+        let [path, search] = urlParts
+        // see if url path matches route in router
+        let match = this.router.route('get', path)
+        // destructure the route path and path path params
+        let {route, params} = match
+        // look up controller class in routes table
+        let Controller = this.routes[route]
+
+        return Controller ?
+            new Controller({
+                // parse search string into object
+                query: query.parse(search),
+                params: params,
+                cookie: cookie
+            }) : undefined
+    }
+
+    getUrl() {
+        let {pathname, search} = window.location
+        return `${pathname}${search}`
+    }
+
+    rehydrate() {
+        let targetEl = document.querySelector(this.options.target)
+        this.controller = this.createController(this.getUrl())
+        this.controller.deserialize()
+        this.controller.attach(targetEl)
     }
 }
